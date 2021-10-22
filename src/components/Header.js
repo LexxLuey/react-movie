@@ -9,13 +9,20 @@ import {
   setSignOutState,
 } from "../features/user/userSlice";
 import { useEffect } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'; 
+import { useState } from "react";
+
 
 const Header = (props) => {
+  const [click, setClick] = useState(false);
+  const handleClick = () => setClick(!click);
 
   const dispatch = useDispatch();
   const history = useHistory();
   const userName = useSelector(selectUserName);
   const userPhoto = useSelector(selectUserPhoto);
+
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
@@ -71,31 +78,60 @@ const Header = (props) => {
                     <img src="/images/home-icon.svg" alt="HOME" />
                     <span>HOME</span>
                 </a>
-                <a href="#">
+                <a href="/home">
                     <img src="/images/search-icon.svg" alt="SEARCH" />
                     <span>SEARCH</span>
                 </a>
-                <a href="#">
+                <a href="/home">
                     <img src="/images/watchlist-icon.svg" alt="WATCHLIST" />
                     <span>WATCHLIST</span>
                 </a>
-                <a href="#">
+                <a href="/home">
                     <img src="/images/original-icon.svg" alt="ORIGINALS" />
                     <span>ORIGINALS</span>
                 </a>
-                <a href="#">
+                <a href="/home">
                     <img src="/images/movie-icon.svg" alt="MOVIES" />
                     <span>MOVIES</span>
                 </a>
-                <a href="#">
+                <a href="/home">
                     <img src="/images/series-icon.svg" alt="SERIES" />
                     <span>SERIES</span>
                 </a>
             </NavMenu>
+
             <SignOut>
               <UserImg src={userPhoto} alt={userName} />
-              <DropDown>
-                <span onClick={handleAuth}>Sign out</span>
+              <DropDown> 
+                <a href="/home">
+                    <img src="/images/home-icon.svg" alt="HOME" />
+                    <span>HOME</span>
+                </a>
+                <a href="/home">
+                    <img src="/images/search-icon.svg" alt="SEARCH" />
+                    <span>SEARCH</span>
+                </a>
+                <a href="/home">
+                    <img src="/images/watchlist-icon.svg" alt="WATCHLIST" />
+                    <span>WATCHLIST</span>
+                </a>
+                <a href="/home">
+                    <img src="/images/original-icon.svg" alt="ORIGINALS" />
+                    <span>ORIGINALS</span>
+                </a>
+                <a href="/home">
+                    <img src="/images/movie-icon.svg" alt="MOVIES" />
+                    <span>MOVIES</span>
+                </a>
+                <a href="/home">
+                    <img src="/images/series-icon.svg" alt="SERIES" />
+                    <span>SERIES</span>
+                </a>
+                <a>
+                    <img src="/images/original-icon.svg" alt="SIGN OUT" />
+                    <span onClick={handleAuth}>SIGN OUT</span>
+                </a>
+                
               </DropDown>
             </SignOut>
             </>
@@ -196,9 +232,26 @@ const NavMenu = styled.div`
     }
   }
 
-  @media (max-width: 768px) {
+   @media (max-width: 768px) {
+    
     display: none;
+
   } 
+
+`;
+
+
+const CloseToggle = styled.button`
+    position: fixed;
+    top: 5%;
+    right: 4%;
+    background: #222;
+    color: #fff;
+    padding: .75rem;
+    display: flex;
+    place-items: center;
+    font-size: 2rem;
+    cursor: pointer;
 `;
 
 const Login = styled.a`
@@ -234,8 +287,60 @@ const DropDown = styled.div`
   padding: 10px;
   font-size: 14px;
   letter-spacing: 3px;
-  width: 100px;
+  width: 150px;
   opacity: 0;
+
+  a {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    position: relative;
+
+    img {
+      height: 20px;
+      min-width: 20px;
+      width: 20px;
+      z-index: auto;
+    }
+
+    span {
+      color: rgb(249, 249, 249);
+      font-size: 13px;
+      letter-spacing: 1.42px;
+      line-height: 1.08;
+      padding: 2px 0px;
+      white-space: nowrap;
+      position: relative;
+
+
+      &:before {
+        background-color: rgb(249, 249, 249);
+        border-radius: 0px 0px 4px 4px;
+        bottom: -6px;
+        content: "";
+        height: 2px;
+        left: 0px;
+        opacity: 0;
+        position: absolute;
+        right: 0px;
+        transform-origin: left center;
+        transform: scaleX(0);
+        transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s;
+        visibility: hidden;
+        width: auto;
+      }
+    }
+
+    &:hover {
+      span:before {
+        transform: scaleX(1);
+        visibility: visible;
+        opacity: 1 !important;
+      }
+    }
+  }
+
+  
 `;
 
 const SignOut = styled.div`
@@ -246,6 +351,10 @@ const SignOut = styled.div`
   cursor: pointer;
   align-items: center;
   justify-content: center;
+  text-align:center;
+  
+  
+  
 
   ${UserImg} {
     border-radius: 50%;
@@ -255,6 +364,7 @@ const SignOut = styled.div`
 
   &:hover {
     ${DropDown} {
+      
       opacity: 1;
       transition-duration: 1s;
     }
